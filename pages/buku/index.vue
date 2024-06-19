@@ -41,7 +41,63 @@
           </div>
       </template>
   
+<script setup>
 
+</script>
+
+<script setup>
+const supabase = useSupabaseClient()
+
+</script>
+
+<script setup>
+const Supabase = useSupabaseClient()
+
+const books = ref([])
+</script>
+
+<script setup>
+
+const getBooks = async () => {
+  const { data,eror } = await supabase.from('buku').select(`*, kategori(*)`)
+  if(data) books.value = data
+}
+</script>
+
+<script setup>
+
+  onMounted(() => {
+    getBooks()
+  })
+</script>
+
+<div v-for="(book,i) in books" :key=""i class="col-lg-2">
+  <div class="card mb-3">
+    <div class="card-body">
+      <img :src="book.cover" class="cover" alt="cover">
+    </div>
+  </div>
+</div>
+</script>
+
+<form @submit.prevent="getBooks">
+  <input v-model="keyword" type="search">
+</form>
+
+<script setup>
+
+  const keyword = ref(**)
+
+</script>
+
+<script setup>
+
+  const getBooks= async () => {
+    const { data,error } await supabase.from 'buku'.select('*, kategori(*)')
+    .ilike('judul', '%${keyword.value}%')
+    id (data) books.value=data
+  }
+</script>
 
   <style scoped>
   .card-body {

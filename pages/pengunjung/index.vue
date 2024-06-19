@@ -13,17 +13,15 @@
               <td>#</td>
               <td>NAMA</td>
               <td>KEANGGOTAAN</td>
-              <td>WAKTU</td>
               <td>KEPERLUAN</td>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>1</td>
-              <td>Risti</td>
-              <td>Siswa</td>
-              <td>24 Februari 2024, 23.31.00</td>
-              <td>Baca</td>
+            <tr v-for="(visitor,i) in visitors" :key="i">
+              <td>{{ i+1 }},</td>
+              <td>{{ visitor.nama }}</td>
+              <td>{{ visitor.keanggotaan.nama }}</td>
+              <td>{{ vistor.keperluan.nama }}</td>
             </tr>
           </tbody>
         </table>
@@ -38,6 +36,7 @@
 <script setup>
 const supabase = useSupabaseClient()
 
+const books = ref ([])
 const visitors = ref([])
 
 const getPengunjung = async () => {
