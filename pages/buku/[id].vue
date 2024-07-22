@@ -1,69 +1,54 @@
 <template>
-  <div class="container-fluid">
-    <div class="row mt-4 d-flex justify-content-evenly">
-      <div class="col-lg-4">
-        <div class="card">
+  <div class="bg">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="icon mt-4">
+          <nuxt-link to="/Buku/"> </nuxt-link>
+          <h2 class="text-start text-white my-4 text-center">{{ buku.judul }}</h2>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-4 text-white d-flex flex-column justify-contant-center">
+        <h4>detail buku:</h4>
+        <h5>penulis: {{ buku.penulis }}</h5>
+        <h5>jumlah Halaman: {{ buku.jumlah_halaman }}</h5>
+        <h5>tahun terbit: {{ buku.tahun_terbit }}</h5>
+        <h5>penerbit: {{ buku.penerbit }}</h5>
+      </div>
+      <div class="col-4 d-flex flex-column justify-content-center align-items">
+        <div class="mb-5">
           <div class="card-body">
-            <img :src="buku.cover" width="220px" height="340px" class="cover" alt="cover1">
+            <img :src="buku.cover" class="ukuran center" />
           </div>
         </div>
       </div>
-      <div class="col-4">
-        <h5>Judul: {{ buku.judul }}</h5>
-        <h5>Pengarang: {{ buku.pengarang }}</h5>
-        <h5>Tahun terbit: {{ buku.tahun_terbit }}</h5>
-        <h5>Rak: {{ buku.rak }}</h5>
+    </div>
+    <div class="row text-white">
+      <div class="col">
+        <h4 class="text-white">Deskripsi</h4>
+        <h5>{{ buku.deskripsi }}</h5>
       </div>
     </div>
-    <div class="row mt-5">
-      <h2>Sinopsis</h2>
-      <p class="mt-3"> mengisahkan petualangan hidup remaja berusia 15 tahun yang memiliki kemampuan hebat dalam berburu babi hutan. 
-        Hal itu membuat Teuku Muda terkesan. Bapak tua itu kemudian membawanya ke kota untuk diasuh layaknya anak angkat. Tokoh utama dalam sinopsis novel Pulang bernama Bujang.</p>
-    </div>
-    <nuxt-link to="/buku">
-      <button type="button" class="btn btn-dark mt-5">Kembali</button>
-    </nuxt-link>
+    <NuxtLink to="/Buku/">
+      <button type="submit" class="btn btn-dark btn-lg rounded-5 px-5">kembali</button>
+    </NuxtLink>
   </div>
 </template>
 
-<style scoped>
-.card {
-  width: 255px;
-  height: 370px;
-  box-shadow: 1px 1px 10px #424242;
-}
-</style>
-
 <script setup>
-const supabase = useSupabaseClient()
+const supabase = useSupabaseClient();
 
-const route = useRoute()
-const buku = ref([])
+const route = useRoute();
 
-const getBookById = async () => {
-  const { data, error } = await supabase.from('buku').select(`*, kategori(*))`)
-  .eq('id', route.params.id)
-  if(data) buku.value = data[0]
-}
-</script>
+const buku = ref([]);
 
-<script setup>
+const getBooksById = async () => {
+  const { data, error } = await supabase.from("buku").select(`*, kategori(*)`).eq("id", route.params.id);
+  if (data) buku.value = data[0];
+};
 
 onMounted(() => {
-  getBookById()
-})
+  getBooksById();
+});
 </script>
-<h2 class="text-start my-4">{{ buku.judul }}</h2>
-<div class="row">
-  <div class="col-md-3">
-    <img src="buku.cover" class="cover" alt="cover buku">
-  </div>
-  <div class="col-md-6">
-    <div class="badge bg-primary p-2">{{ buku.kategori }}</div>
-    <ul class="list-group list-group-flush">
-      <li class="list-group-item">Penulis: {{ buku.penulis }}</li>
-      <li class="list-group-item">Penerbit: {{ buku.penerbit }}</li>
-      <li class="list-group-item">{{ buku.deskripsi }}</li>
-    </ul>
-  </div>
-</div>
